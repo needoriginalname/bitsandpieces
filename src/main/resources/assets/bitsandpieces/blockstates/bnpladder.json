@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "bitsandpieces:bnpladder" },
+    "facing=east":  { "model": "bitsandpieces:bnpladder", "y": 90 },
+    "facing=south": { "model": "bitsandpieces:bnpladder", "y": 180 },
+    "facing=west":  { "model": "bitsandpieces:bnpladder", "y": 270 }
+  }
+}
