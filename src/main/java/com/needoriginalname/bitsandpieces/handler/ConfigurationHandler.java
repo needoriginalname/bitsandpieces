@@ -35,11 +35,23 @@ public class ConfigurationHandler {
     private static void loadConfiguration() {
         isSunCapturerEnabled = configuration.getBoolean("isSunCapturerEnabled", SUN_CAPTURER_CATEGORY, false, "Is the SunCapturerEnabled, NOT SUGGESTED FOR PUBLIC SERVERS.");
         sunCapturerRange = configuration.getInt("sunCapturerRange", SUN_CAPTURER_CATEGORY, 50, 5, 5000, "how many blocks in the x z plane a fire can spawn");
-        sunCapturerTick = configuration.getInt("sunCapturerTick", SUN_CAPTURER_CATEGORY, 100, 100, 60*60*20, "how many ticks before trying to spawn in a new fire block");
+        sunCapturerTick = configuration.getInt("sunCapturerTick", SUN_CAPTURER_CATEGORY, 100, 1, 60*60*20, "how many ticks before trying to spawn in a new fire block");
         sunCapturerLevel1 = configuration.getInt("sunCapturerLevel1", SUN_CAPTURER_CATEGORY, 20*20*60, 0, Integer.MAX_VALUE, "when to start randomly starting fires, when sun capturer is started.");
-        sunCapturerLevel2 = configuration.getInt("sunCapturerLevel2", SUN_CAPTURER_CATEGORY, 20*20*60*2, sunCapturerLevel1, Integer.MAX_VALUE, "when to stop fire from going out. Prevents rain for occurering, must be larger then level 1");
-        sunCapturerLevel3 = configuration.getInt("sunCapturerLevel3", SUN_CAPTURER_CATEGORY, 20*20*60*3, sunCapturerLevel2, Integer.MAX_VALUE, "when to start destroying water in the search zone. Must be larger then level 2.");
-        sunCapturerLevel4 = configuration.getInt("sunCapturerLevel4", SUN_CAPTURER_CATEGORY, 20*20*60*4, sunCapturerLevel3, Integer.MAX_VALUE, "when to start burning entities that can see sky. Must be larger then level 3.");
+        sunCapturerLevel2 = configuration.getInt("sunCapturerLevel2", SUN_CAPTURER_CATEGORY, 20*20*60*2, 1, Integer.MAX_VALUE, "when to stop fire from going out. Prevents rain for occurering, must be larger then level 1");
+        sunCapturerLevel3 = configuration.getInt("sunCapturerLevel3", SUN_CAPTURER_CATEGORY, 20*20*60*3, 2, Integer.MAX_VALUE, "when to start destroying water in the search zone. Must be larger then level 2.");
+        sunCapturerLevel4 = configuration.getInt("sunCapturerLevel4", SUN_CAPTURER_CATEGORY, 20*20*60*4, 3, Integer.MAX_VALUE, "when to start burning entities that can see sky. Must be larger then level 3.");
+
+        if (sunCapturerLevel1 < sunCapturerLevel2){
+            sunCapturerLevel2 = sunCapturerLevel1;
+        }
+        if (sunCapturerLevel2 < sunCapturerLevel3){
+            sunCapturerLevel3 = sunCapturerLevel4;
+        }
+
+        if (sunCapturerLevel3 < sunCapturerLevel4){
+            sunCapturerLevel4 = sunCapturerLevel3;
+        }
+
         if (configuration.hasChanged()){
             configuration.save();
         }
