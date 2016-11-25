@@ -7,6 +7,7 @@ public class Name {
     public static final String BnPLadder = "bnpladder";
     public static final String SunCapturer= "suncapturer";
     public static final String BnPFire = "bnpfire";
+    public static final String ItemGate="itemgate";
 
     public static final String getFlavorTranslate (String registryName){
         return registryName+".flavor";

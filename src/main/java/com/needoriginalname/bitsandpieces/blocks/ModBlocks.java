@@ -23,6 +23,8 @@ public class ModBlocks {
     public static BlockBnpFire bnpfire;
     public static BlockSunCapturer sunCapturer;
     public static IBSunCapturer ibSunCapturer;
+    public static BlockItemGate blockItemGate;
+    public static ItemBlock ibBlockItemGate;
 
     public static void preInit(FMLPreInitializationEvent event){
         bnpladder = new BnPLadder();
@@ -30,6 +32,8 @@ public class ModBlocks {
         bnpLadderIB = registerBlockAndItemBlock(event, bnpladder);
         sunCapturer = new BlockSunCapturer();
         ibSunCapturer = new IBSunCapturer();
+        blockItemGate = new BlockItemGate();
+        ibBlockItemGate = registerBlockAndItemBlock(event, blockItemGate);
         registerBlockAndItemBlock(event, sunCapturer, ibSunCapturer);
         GameRegistry.register(bnpfire);
     }
