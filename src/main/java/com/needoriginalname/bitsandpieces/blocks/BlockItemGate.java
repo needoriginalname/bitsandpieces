@@ -13,12 +13,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -33,12 +34,12 @@ public class BlockItemGate extends BlockBnP{
     private static final PropertyBool OPENED = PropertyBool.create("opened");
 
     /** Ordering index for D-U-N-S-W-E */
-    private static final AxisAlignedBB DOWN_BB = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.1, 1.0);
-    private static final AxisAlignedBB UP_BB = new AxisAlignedBB(0.0, 0.9, 0.0, 1.0, 1.0, 1.0);
-    private static final AxisAlignedBB NORTH_BB = new AxisAlignedBB(0.0, 0.0, 0.9, 1.0, 1.0, 1.0);
-    private static final AxisAlignedBB SOUTH_BB = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 0.1);
-    private static final AxisAlignedBB WEST_BB = new AxisAlignedBB(0.0, 0.0, 0.0, 0.1, 1.0, 1.0);
-    private static final AxisAlignedBB EAST_BB = new AxisAlignedBB(0.9, 0.0, 0.0, 1.0, 1.0, 1.0);
+    private static final AxisAlignedBB DOWN_BB = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.1875, 1.0);
+    private static final AxisAlignedBB UP_BB = new AxisAlignedBB(0.0, 0.8125, 0.0, 1.0, 1.0, 1.0);
+    private static final AxisAlignedBB SOUTH_BB = new AxisAlignedBB(0.0, 0.0, 0.8125, 1.0, 1.0, 1.0);
+    private static final AxisAlignedBB NORTH_BB = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 0.1875);
+    private static final AxisAlignedBB WEST_BB = new AxisAlignedBB(0.0, 0.0, 0.0, 0.1875, 1.0, 1.0);
+    private static final AxisAlignedBB EAST_BB = new AxisAlignedBB(0.8125, 0.0, 0.0, 1.0, 1.0, 1.0);
     private static final AxisAlignedBB[] BBs = new AxisAlignedBB[] {DOWN_BB, UP_BB, NORTH_BB, SOUTH_BB, WEST_BB, EAST_BB};
 
 
@@ -161,6 +162,31 @@ public class BlockItemGate extends BlockBnP{
     }
 
     /**
+     * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable, returns the passed
+     * blockstate.
+     */
+    public IBlockState withRotation(IBlockState state, Rotation rot)
+    {
+        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+    }
+
+    /**
+     * Returns the blockstate with the given mirror of the passed blockstate. If inapplicable, returns the passed
+     * blockstate.
+     */
+    public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
+    {
+        return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+    }
+
+
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer()
+    {
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    /**
      * Convert the given metadata into a BlockState for this Block
      *
      * @param meta
@@ -176,14 +202,36 @@ public class BlockItemGate extends BlockBnP{
         return state;
     }
 
-
     @Override
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
+        if (entityIn != null && !(entityIn instanceof EntityItem)) {
+            super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, null);
+        } else if (entityIn == null){
 
-        if (entityIn == null || !state.getValue(OPENED) || !(entityIn instanceof EntityItem)) {
-            super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn);
+            if (!worldIn.getEntitiesWithinAABB(EntityItem.class,
+                    this.getCollisionBoundingBox(state,worldIn, pos).offset(pos)).isEmpty()){
+                addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
+            } else {
+                super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, null);
+            }
         } else {
             addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
         }
+    }
+
+    /**
+     * Called When an Entity Collided with the Block
+     *
+     * @param worldIn
+     * @param pos
+     * @param state
+     * @param entityIn
+     */
+    @Override
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+        if (entityIn instanceof EntityItem){
+            //entityIn.setPositionAndUpdate(entityIn.posX, entityIn.posY-0.5f, entityIn.posZ);
+        }
+        super.onEntityCollidedWithBlock(worldIn, pos, state, entityIn);
     }
 }
