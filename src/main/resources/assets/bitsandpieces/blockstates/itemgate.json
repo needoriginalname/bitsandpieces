@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=north,opened=true":{"model":"bitsandpieces:itemgate_open", "x": 270},
+    "facing=south,opened=true":{"model":"bitsandpieces:itemgate_open", "x": 90},
+    "facing=west,opened=true":{"model":"bitsandpieces:itemgate_open", "z": 90},
+    "facing=east,opened=true":{"model":"bitsandpieces:itemgate_open", "z": 270},
+    "facing=down,opened=true":{"model":"bitsandpieces:itemgate_open"},
+    "facing=up,opened=true":{"model":"bitsandpieces:itemgate_open", "x": 180},
+    "facing=north,opened=false":{"model":"bitsandpieces:itemgate_close", "x": 270},
+    "facing=south,opened=false":{"model":"bitsandpieces:itemgate_close", "x": 90},
+    "facing=west,opened=false":{"model":"bitsandpieces:itemgate_close", "z": 90},
+    "facing=east,opened=false":{"model":"bitsandpieces:itemgate_close", "z": 270},
+    "facing=down,opened=false":{"model":"bitsandpieces:itemgate_close"},
+    "facing=up,opened=false":{"model":"bitsandpieces:itemgate_close", "x": 180}
+  }
+}
