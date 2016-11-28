@@ -1,6 +1,7 @@
 package com.needoriginalname.bitsandpieces.blocks;
 
 import com.needoriginalname.bitsandpieces.reference.Name;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -12,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -104,8 +106,37 @@ public class BlockItemGate extends BlockBnP{
         return false;
     }
 
+    /**
+     * Called when a neighboring block was changed and marks that this state should perform any checks during a neighbor
+     * change. Cases may include when redstone power is updated, cactus blocks popping off due to a neighboring solid
+     * block, etc.
+     *
+     * @param state
+     * @param worldIn
+     * @param pos
+     * @param blockIn
+     */
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+        if (!worldIn.isRemote)
+        {
+            boolean isBeingPowered = worldIn.isBlockPowered(pos);
+            boolean isCurrentlyPowered = !state.getValue(OPENED);
 
 
+            if (isBeingPowered != isCurrentlyPowered){
+
+                state = state.withProperty(OPENED, !isBeingPowered);
+                SoundEvent sfx = state.getValue(OPENED) ? SoundEvents.BLOCK_WOODEN_TRAPDOOR_OPEN : SoundEvents.BLOCK_WOODEN_TRAPDOOR_CLOSE;
+                worldIn.playSound(null, pos.getX() + 0.5D ,pos.getY()+ 0.5D, pos.getZ() + 0.5D, sfx, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                worldIn.setBlockState(pos, state, 2);
+            }
+
+
+
+
+        }
+    }
 
     /**
      * Whether this Block is solid on the given Side
@@ -228,7 +259,8 @@ public class BlockItemGate extends BlockBnP{
 
     @Override
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn) {
-        if (entityIn != null && !(entityIn instanceof EntityItem)) {
+
+        if (!state.getValue(OPENED) || (entityIn != null && !(entityIn instanceof EntityItem))) {
             super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, null);
         } else if (entityIn == null){
 
