@@ -42,20 +42,18 @@ public class NBTHelper
     }
 
 
-
-
-
-    public static void setLong(ItemStack itemStack, String keyName, long keyValue)
-    {
-        getModLevelTags(itemStack).setLong(keyName, keyValue);
+    // ItemStack
+    // String
+    public static String getString(ItemStack itemStack, String keyName){
+        return getString(itemStack, keyName, "");
     }
 
-    // String
-    public static String getString(ItemStack itemStack, String keyName)
+
+    public static String getString(ItemStack itemStack, String keyName, String defaultValue)
     {
         if (!getModLevelTags(itemStack).hasKey(keyName))
         {
-            setString(itemStack, keyName, "");
+            setString(itemStack, keyName, defaultValue);
         }
 
         return getModLevelTags(itemStack).getString(keyName);
@@ -69,11 +67,14 @@ public class NBTHelper
     // boolean
     public static boolean getBoolean(ItemStack itemStack, String keyName)
     {
+        return getBoolean(itemStack, keyName, false);
+    }
 
-
+    public static boolean getBoolean(ItemStack itemStack, String keyName, boolean defaultValue)
+    {
         if (!getModLevelTags(itemStack).hasKey(keyName))
         {
-            setBoolean(itemStack, keyName, false);
+            setBoolean(itemStack, keyName, defaultValue);
         }
 
         return getModLevelTags(itemStack).getBoolean(keyName);
@@ -84,30 +85,16 @@ public class NBTHelper
         getModLevelTags(itemStack).setBoolean(keyName, keyValue);
     }
 
-
-    public static boolean getBoolean(Entity entity, String keyName)
-    {
-
-
-        if (!getModLevelTags(entity).hasKey(keyName))
-        {
-            setBoolean(entity, keyName, false);
-        }
-
-        return getModLevelTags(entity).getBoolean(keyName);
-    }
-
-    public static void setBoolean(Entity entity, String keyName, boolean keyValue)
-    {
-        getModLevelTags(entity).setBoolean(keyName, keyValue);
-    }
-
     // byte
-    public static byte getByte(ItemStack itemStack, String keyName)
+    public static byte getByte(ItemStack itemStack, String keyName){
+        return getByte(itemStack, keyName, (byte) 0);
+    }
+
+    public static byte getByte(ItemStack itemStack, String keyName, byte defaultValue)
     {
         if (!getModLevelTags(itemStack).hasKey(keyName))
         {
-            setByte(itemStack, keyName, (byte) 0);
+            setByte(itemStack, keyName, (byte) defaultValue);
         }
 
         return getModLevelTags(itemStack).getByte(keyName);
@@ -119,11 +106,15 @@ public class NBTHelper
     }
 
     // short
-    public static short getShort(ItemStack itemStack, String keyName)
+    public static short getShort(ItemStack itemStack, String keyName){
+        return getShort(itemStack, keyName, (short) 0);
+    }
+
+    public static short getShort(ItemStack itemStack, String keyName, short defaultValue)
     {
         if (!getModLevelTags(itemStack).hasKey(keyName))
         {
-            setShort(itemStack, keyName, (short) 0);
+            setShort(itemStack, keyName, (short) defaultValue);
         }
 
         return getModLevelTags(itemStack).getShort(keyName);
@@ -135,12 +126,16 @@ public class NBTHelper
     }
 
     // int
-    public static int getInt(ItemStack itemStack, String keyName)
+    public static int getInt(ItemStack itemStack, String keyName){
+        return getInt(itemStack, keyName, 0);
+    }
+
+    public static int getInt(ItemStack itemStack, String keyName, int defaultValue)
     {
 
         if (!getModLevelTags(itemStack).hasKey(keyName))
         {
-            setInteger(itemStack, keyName, 0);
+            setInteger(itemStack, keyName, defaultValue);
         }
 
         return getModLevelTags(itemStack).getInteger(keyName);
@@ -151,47 +146,91 @@ public class NBTHelper
         getModLevelTags(itemStack).setInteger(keyName, keyValue);
     }
 
+
+
+
     // long
-    public static long getLong(ItemStack itemStack, String keyName)
+    public static long getLong(ItemStack itemStack, String keyName){
+        return getLong(itemStack, keyName, 0);
+    }
+
+    public static long getLong(ItemStack itemStack, String keyName, long defaultValue)
     {
         if (!getModLevelTags(itemStack).hasKey(keyName))
         {
-            setLong(itemStack, keyName, 0);
+            setLong(itemStack, keyName, defaultValue);
         }
 
         return getModLevelTags(itemStack).getLong(keyName);
     }
+    public static void setLong(ItemStack itemStack, String keyName, long keyValue)
+    {
+        getModLevelTags(itemStack).setLong(keyName, keyValue);
+    }
+
+
 
     // float
-    public static float getFloat(ItemStack itemStack, String keyName)
+    public static float getFloat(ItemStack itemStack, String keyName, float defaultValue)
     {
         if (!getModLevelTags(itemStack).hasKey(keyName))
         {
-            setFloat(itemStack, keyName, 0);
+            setFloat(itemStack, keyName, defaultValue);
         }
 
         return getModLevelTags(itemStack).getFloat(keyName);
+    }
+
+    public static float getFloat(ItemStack itemStack, String keyName){
+        return getFloat(itemStack, keyName, 0.0f);
     }
 
     public static void setFloat(ItemStack itemStack, String keyName, float keyValue)
     {
         getModLevelTags(itemStack).setFloat(keyName, keyValue);
     }
-
     // double
-    public static double getDouble(ItemStack itemStack, String keyName)
+    public static double getDouble(ItemStack itemStack, String keyName, double defaultValue)
     {
 
         if (!getModLevelTags(itemStack).hasKey(keyName))
         {
-            setDouble(itemStack, keyName, 0);
+            setDouble(itemStack, keyName, defaultValue);
         }
 
         return getModLevelTags(itemStack).getDouble(keyName);
+    }
+
+    public static double getDouble(ItemStack itemStack, String keyName)
+    {
+        return getDouble(itemStack, keyName, 0.0D);
     }
 
     public static void setDouble(ItemStack itemStack, String keyName, double keyValue)
     {
         getModLevelTags(itemStack).setDouble(keyName, keyValue);
     }
+
+
+    //Entities
+    //boolean
+    public static boolean getBoolean(Entity entity, String keyName){
+        return getBoolean(entity, keyName, false);
+    }
+
+    public static boolean getBoolean(Entity entity, String keyName, boolean defaultValue)
+    {
+        if (!getModLevelTags(entity).hasKey(keyName))
+        {
+            setBoolean(entity, keyName, defaultValue);
+        }
+
+        return getModLevelTags(entity).getBoolean(keyName);
+    }
+
+    public static void setBoolean(Entity entity, String keyName, boolean keyValue)
+    {
+        getModLevelTags(entity).setBoolean(keyName, keyValue);
+    }
+
 }
