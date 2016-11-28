@@ -21,7 +21,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -67,6 +66,17 @@ public class BlockItemGate extends BlockBnP{
         state = state.withProperty(OPENED, opened);
 
     }
+
+    /**
+     * Used in the renderer to apply ambient occlusion
+     *
+     * @param state
+     */
+    @Override
+    public boolean isTranslucent(IBlockState state) {
+        return true;
+    }
+
 
 
     /**
@@ -161,6 +171,11 @@ public class BlockItemGate extends BlockBnP{
         return meta;
     }
 
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
+
     /**
      * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable, returns the passed
      * blockstate.
@@ -179,6 +194,15 @@ public class BlockItemGate extends BlockBnP{
         return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
     }
 
+    /**
+     * Used to determine ambient occlusion and culling when rebuilding chunks for render
+     *
+     * @param state
+     */
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
 
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer()
@@ -203,7 +227,7 @@ public class BlockItemGate extends BlockBnP{
     }
 
     @Override
-    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
+    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn) {
         if (entityIn != null && !(entityIn instanceof EntityItem)) {
             super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, null);
         } else if (entityIn == null){
