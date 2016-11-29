@@ -50,7 +50,7 @@ public class ItemIceSkates extends ItemArmor{
         if (player.onGround) {
             IBlockState blockBelowPlayer = world.getBlockState(player.getPosition().down());
             if (blockBelowPlayer.getBlock() == Blocks.ICE || blockBelowPlayer.getBlock() == Blocks.FROSTED_ICE || blockBelowPlayer.getBlock() == Blocks.PACKED_ICE) {
-                player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("speed"), 4, 1, false, false));
+               // player.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("speed"), 4, 1, false, false));
                 //TODO: add skating effects
 
 

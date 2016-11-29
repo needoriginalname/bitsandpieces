@@ -2,6 +2,7 @@ package com.needoriginalname.bitsandpieces;
 
 import com.needoriginalname.bitsandpieces.blocks.ModBlocks;
 import com.needoriginalname.bitsandpieces.handler.ConfigurationHandler;
+import com.needoriginalname.bitsandpieces.handler.IceSkatingHandler;
 import com.needoriginalname.bitsandpieces.handler.SunCaptuerHandler;
 import com.needoriginalname.bitsandpieces.items.ModItems;
 import com.needoriginalname.bitsandpieces.reference.Reference;
@@ -28,6 +29,7 @@ public class BitsAndPiecesMod {
         ModBlocks.preInit(event);
         ModItems.preInit(event);
         MinecraftForge.EVENT_BUS.register(new SunCaptuerHandler());
+        MinecraftForge.EVENT_BUS.register(new IceSkatingHandler());
     }
 
     public void init(FMLInitializationEvent event){
